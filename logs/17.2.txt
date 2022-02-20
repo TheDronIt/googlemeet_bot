@@ -1,0 +1,53 @@
+[01:48:01] System | Bot launched
+[01:48:16] System | GoogleAuth sucсessfully
+[01:49:21] GoogleMeet conntect link - https://meet.google.com/zth-nanc-zrb
+[01:49:23] GoogleMeet disconntect
+[01:49:23] Automatic exit
+[01:49:55] GoogleMeet conntect link - https://meet.google.com/zth-nanc-zrb
+[01:49:55] 219648345 | Подключился: https://meet.google.com/zth-nanc-zrb
+[01:49:57] GoogleMeet disconntect
+[01:49:57] Automatic exit
+[01:57:23] System | Bot launched
+[01:57:36] System | GoogleAuth sucсessfully
+[01:57:44] 219648345 | Подключился: https://meet.google.com/zth-nanc-zrb
+[01:57:49] GoogleMeet conntect link - https://meet.google.com/zth-nanc-zrb
+[01:57:51] GoogleMeet disconntect
+[01:57:51] Automatic exit
+[02:00:29] Screenshot
+[02:00:29] 219648345 | Сделал скриншот
+[03:07:00] System | Bot launched
+[03:07:13] System | GoogleAuth sucсessfully
+[03:07:42] 219648345 | Подключился: https://meet.google.com/vde-utdm-fks
+[03:07:48] GoogleMeet conntect link - https://meet.google.com/vde-utdm-fks
+[03:08:08] 219648345 | Подключился: https://meet.google.com/vde-utdm-fks
+[03:08:14] GoogleMeet conntect link - https://meet.google.com/vde-utdm-fks
+[03:13:15] System | Bot launched
+[03:13:28] System | GoogleAuth sucсessfully
+[03:13:30] 219648345 | Подключился: https://meet.google.com/vde-utdm-fks
+[03:13:35] GoogleMeet conntect link - https://meet.google.com/vde-utdm-fks
+[03:13:49] GoogleMeet send message: +
+[03:13:49] Automatic message sending: +
+[04:09:35] 219648345 | Сделал скриншот
+[04:09:37] Screenshot
+[04:21:14] 219648345 | Сделал скриншот
+[04:21:17] Screenshot
+[04:47:36] 219648345 | Сделал скриншот
+[04:47:38] Screenshot
+[04:55:15] 219648345 | Сделал скриншот
+[04:55:17] Screenshot
+[04:58:35] System | Bot launched
+[04:58:51] System | GoogleAuth sucсessfully
+[04:59:02] 219648345 | Подключился: https://meet.google.com/vde-utdm-fks
+[04:59:07] GoogleMeet conntect link - https://meet.google.com/vde-utdm-fks
+[05:05:45] GoogleMeet send message: +
+[05:05:45] Automatic message sending: +
+[05:08:26] 219648345 | Сделал скриншот
+[05:08:28] Screenshot
+[06:50:51] Automatic connect
+[06:50:56] GoogleMeet conntect link - https://meet.google.com/vde-utdm-fks
+[06:59:59] GoogleMeet send message: +
+[06:59:59] Automatic message sending: +
+[09:04:14] GoogleMeet send message: +
+[09:04:14] Automatic message sending: +
+[09:29:27] GoogleMeet disconntect
+[09:29:27] Automatic exit

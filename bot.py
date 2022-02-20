@@ -10,22 +10,25 @@ import threading
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-import re
 import account, rasp
 
 #Settings
-minimum_number_of_users_to_logout = 6 #Normal value 6
-minimum_number_of_messages_to_send = 6 #Normal value 6
+minimum_number_of_users_to_logout = 4 #Normal value 6
+minimum_number_of_messages_to_send = 5 #Normal value 6
 
 admin = [
 	'219648345', #Дрон
+	'229512263', #Даша
+	'218401412', #Богдан
+	'431517628', #Гриша
+	'264207449', #Даня
+	'256318620', #Слава
 ]
 
 
 vk = vk_api.VkApi(token=account.vk_token)
 longpoll = VkLongPoll(vk)
 print("Bot launched")
-
 
 #Today info
 current_datetime = datetime.now()
@@ -41,6 +44,7 @@ option = webdriver.FirefoxOptions()
 option.set_preference('dom.webdriver.enabled', False)
 option.set_preference('media.navigator.permission.disabled', True)
 #option.add_argument("--headless") #Without browser window
+#добавить разрешениие для динамиков
 driver = webdriver.Firefox(options=option)
 
 
@@ -76,74 +80,106 @@ def GoogleAuth():
 		togu_password_input.send_keys(account.togu_password)
 		togu_btn_next = driver.find_element(By.XPATH, "/html/body/div/div/form/div/div/div[1]/div[1]/button").click()
 		time.sleep(5)
+		write_logs("System | GoogleAuth sucсessfully")
 	except:
 		print("Ошибка авторизации\nПерезапускаем")
+		write_logs("System | GoogleAuth error")
 		time.sleep(5)
 		GoogleAuth()
 
 
 def GoogleMeet_conntect(link):
-	driver.get(link) #Google Meet link
-	time.sleep(2)
-	mute_microphone()
-	turn_off_webcam()
-	time.sleep(1)
-	meet_connect = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span").click()
-	global messages_count
-	messages_count = 0 #Count messages in chat
-	open_chat()
+	try:
+		driver.get(link) #Google Meet link
+		time.sleep(2)
+		mute_microphone()
+		turn_off_webcam()
+		time.sleep(1)
+		meet_connect = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span").click()
+		global messages_count
+		messages_count = 0 #Count messages in chat
+		open_chat()
+		write_logs("GoogleMeet conntect link - "+str(link))
+	except Exception as e:
+		print(e)
+		write_logs("GoogleMeet conntect error")
+
 
 def GoogleMeet_disconntect():
-	driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[10]/div[2]/div/div[7]/span/button").click()
+	try:
+		driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[10]/div[2]/div/div[7]/span/button").click()
+		write_logs("GoogleMeet disconntect")
+	except:
+		write_logs("GoogleMeet disconntect error")
 
 
 def GoogleMeet_send_message(message):
-	chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[5]/div/div[1]/div[2]/textarea')
-	chat.send_keys(message)
-	send_btn = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[5]/span/button').click()
+	try:
+		chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[5]/div/div[1]/div[2]/textarea')
+		chat.send_keys(message)
+		send_btn = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[5]/span/button').click()
+		write_logs("GoogleMeet send message: "+str(message))
+	except:
+		write_logs("GoogleMeet send message error")
+
 
 def Screenshot():
-	site = driver.find_element(By.TAG_NAME, "html")
-	site.screenshot('screenshot.png')
-	time.sleep(2)
+	try:
+		site = driver.find_element(By.TAG_NAME, "html")
+		site.screenshot('screenshot.png')
+		time.sleep(2)
+		write_logs("Screenshot")
+	except:
+		write_logs("Screenshot error")
 
 
 def Close_browser():
-	time.sleep(5)
-	driver.close()
-	driver.quit()
+	try:
+		time.sleep(5)
+		driver.close()
+		driver.quit()
+		write_logs("Close browser")
+	except:
+		write_logs("Close browser error")
 
 
 def open_chat():
-	#add try
-	chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[10]/div[3]/div[3]/div/div/div[3]/span/button')
-	chat_open = chat.get_attribute("aria-pressed")
-	if chat_open == "false":
-		chat.click()
+	try:
+		chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[10]/div[3]/div[3]/div/div/div[3]/span/button')
+		chat_open = chat.get_attribute("aria-pressed")
+		if chat_open == "false":
+			chat.click()
+	except:
+		write_logs("Open chat error")
 
 
 def mute_microphone():
-	#add try
-	microphone = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div/div") 
-	microphone_muted = microphone.get_attribute("data-is-muted")
-	if str(microphone_muted) == "false":
-		site = driver.find_element(By.TAG_NAME, "html")
-		site.send_keys(Keys.CONTROL + 'D') #Mute microphone
+	try:
+		microphone = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div/div") 
+		microphone_muted = microphone.get_attribute("data-is-muted")
+		if str(microphone_muted) == "false":
+			site = driver.find_element(By.TAG_NAME, "html")
+			site.send_keys(Keys.CONTROL + 'D') #Mute microphone
+	except:
+		write_logs("Mute microphone error")
 
 
 def turn_off_webcam():
-	#add try
-	webcam = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[1]/div[1]/div/div[4]/div[2]/div/div") 
-	webcam_turned_off = webcam.get_attribute("data-is-muted")
-	if str(webcam_turned_off) == "false":
-		site = driver.find_element(By.TAG_NAME, "html")
-		site.send_keys(Keys.CONTROL + 'E') #Mute microphone
+	try:
+		webcam = driver.find_element(By.XPATH, "/html/body/div[1]/c-wiz/div/div/div[9]/div[3]/div/div/div[3]/div/div/div[1]/div[1]/div/div[4]/div[2]/div/div") 
+		webcam_turned_off = webcam.get_attribute("data-is-muted")
+		if str(webcam_turned_off) == "false":
+			site = driver.find_element(By.TAG_NAME, "html")
+			site.send_keys(Keys.CONTROL + 'E') #Mute webcam
+	except:
+		write_logs("Turn off webcam error")
 
 
 def exit_with_a_minimum_of_users():
 	try:
 		number_of_users = int(driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[10]/div[3]/div[3]/div/div/div[2]/div/div').text)
 		if number_of_users <= minimum_number_of_users_to_logout:
+			write_logs("Automatic exit")
 			GoogleMeet_disconntect()
 	except:
 		pass
@@ -156,11 +192,13 @@ def automatic_message_sending():
 		if len(chat) >= minimum_number_of_messages_to_send:
 			if messages_count == 0:
 				GoogleMeet_send_message("+")
+				write_logs("Automatic message sending: +")
 				time.sleep(7)#normal 7
 				chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[3]').find_elements(By.CSS_SELECTOR, 'div.YTbUzc')
 				messages_count = len(chat)
 			elif len(chat) >= (messages_count + minimum_number_of_messages_to_send):
 				GoogleMeet_send_message("+")
+				write_logs("Automatic message sending: +")
 				time.sleep(7) #normal 7
 				chat = driver.find_element(By.XPATH, '/html/body/div[1]/c-wiz/div[1]/div/div[9]/div[3]/div[4]/div[2]/div[2]/div/div[3]').find_elements(By.CSS_SELECTOR, 'div.YTbUzc')
 				messages_count = len(chat)
@@ -169,8 +207,20 @@ def automatic_message_sending():
 
 
 
+def write_logs(message):
+	try:
+		current_datetime = datetime.now()
+		day_today = current_datetime.day
+		month_today = current_datetime.month
+		current_time = datetime.today().strftime("%H:%M:%S")
 
+		packet_file = "logs/%s.%s.txt" % (day_today, month_today)
 
+		f = open(packet_file, 'a+')
+		f.write("[%s] %s\n" % (current_time, message))
+		f.close()
+	except Exception as e:
+		print("error with write logs\n"+str(e))
 
 
 
@@ -209,10 +259,12 @@ def ManageBot():
 						if str(event.user_id) in admin:
 							GoogleMeet_disconntect()
 							write_msg(event.user_id, "Отключился")
+							write_logs(str(event.user_id)+" | Отключился")
 						else:
 							write_msg(event.user_id, "Ошибка доступа")
 					elif request == "скриншот":
 						if str(event.user_id) in admin:
+							write_logs(str(event.user_id)+" | Сделал скриншот")
 							Screenshot()
 							upload = vk_api.VkUpload(vk)
 							photo = upload.photo_messages('screenshot.png')
@@ -226,6 +278,7 @@ def ManageBot():
 					elif command == "подключиться":
 						if str(event.user_id) in admin:
 							try:
+								write_logs(str(event.user_id)+" | Подключился: "+str(command_message))
 								GoogleMeet_conntect(command_message)
 							except:
 								write_msg(event.user_id, "Ошибка подключения\nВозможно вы неверно указали ссылку\nПример: Подключиться https://meet.google.com/ffx-dvcy-scp")
@@ -234,6 +287,7 @@ def ManageBot():
 					elif command == "написать":
 						if str(event.user_id) in admin:
 							try:
+								write_logs(str(event.user_id)+" | Написал: "+str(command_message))
 								GoogleMeet_send_message(command_message)
 							except:
 								write_msg(event.user_id, "Не удалось отправить сообещние\nВозможны вы не подключились к конференции")
@@ -245,7 +299,7 @@ def ManageBot():
 
 def Timer():
 	while 1:
-		
+
 		#Today info
 		current_datetime = datetime.now()
 		weekday_today = int(current_datetime.isoweekday())
@@ -258,13 +312,19 @@ def Timer():
 		weekday_in_rasp_dict = str(weekday_today)+str(weektype())
 
 		if weekday_in_rasp_dict in rasp.week_day: #Find dict with lessons on needed day of week
-			if time_now in rasp.week_day[weekday_in_rasp_dict]: #Check out time now with time in dict today
-				for time_in_list in rasp.week_day[weekday_in_rasp_dict]: 
+			if time_now in rasp.week_day[weekday_in_rasp_dict]: #Check out time now with time in dict today		
+				for time_in_list in rasp.week_day[weekday_in_rasp_dict]:
 					if time_now == time_in_list: #If now lesson, we connect to google meet link
-						GoogleMeet_conntect(rasp.week_day[weekday_in_rasp_dict][time_in_list][0])
+						try:
+							write_logs("Automatic connect")
+							GoogleMeet_conntect(rasp.week_day[weekday_in_rasp_dict][time_in_list][0])
+						except:
+							print("error to write Automatic connect")
 		time.sleep(60)
 
 
+
+#https://meet.google.com/tbg-phur-jib
 
 def Automatic_control():
 	while 1:
@@ -277,6 +337,7 @@ def Automatic_control():
 
 
 
+write_logs("System | Bot launched")
 GoogleAuth()
 
 t1 = threading.Thread(target=ManageBot)

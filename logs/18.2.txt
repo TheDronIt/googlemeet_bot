@@ -1,0 +1,12 @@
+[01:20:25] System | Bot launched
+[01:20:40] System | GoogleAuth sucñessfully
+[04:50:42] Automatic connect
+[04:50:47] GoogleMeet conntect link - https://meet.google.com/iwg-hndb-qwg
+[05:07:04] GoogleMeet send message: +
+[05:07:04] Automatic message sending: +
+[06:20:47] Automatic connect
+[06:21:02] GoogleMeet conntect link - https://meet.google.com/iwg-hndb-qwg
+[06:50:02] Automatic connect
+[06:50:13] GoogleMeet conntect link - https://meet.google.com/iwg-hndb-qwg
+[08:27:31] Automatic exit
+[08:27:31] GoogleMeet disconntect
