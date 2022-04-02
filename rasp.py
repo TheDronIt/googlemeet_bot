@@ -10,28 +10,32 @@
 Monday_blue = {
 	'1:30': ['https://meet.google.com/oua-wmat-duq'],
 	'3:10': ['https://meet.google.com/oua-wmat-duq'],
-	#3 пара вроде как в zoom
+	'4:50': ['https://meet.google.com/xup-kije-drj'],
 }
 Monday_red = {
 	'3:10': ['https://meet.google.com/oua-wmat-duq'],
-	#3 пара вроде как в zoom
+	'4:50': ['https://meet.google.com/xup-kije-drj'],
 }
 Wednesday = {
 	#1 в зуме
 	'3:10': ['https://meet.google.com/iwg-hndb-qwg'],
 	'4:50': ['https://meet.google.com/zth-nanc-zrb'],
-	'6:50': ['https://meet.google.com/iwg-hndb-qwg'],#Ссылка вроде как и на 3 паре!!!!!!!!!!!!!!!
+	'6:50': ['https://meet.google.com/zth-nanc-zrb'],
 }
-Thursday_blue = {#n
-	
+Thursday_blue = {
+	'3:10': ['https://meet.google.com/jmj-njvg-ugs'],
+	'4:50': ['https://meet.google.com/vde-utdm-fks'],
+	'6:20': ['https://meet.google.com/jmj-njvg-ugs'], #перерыв
+	'6:50': ['https://meet.google.com/jmj-njvg-ugs'],
 }
 Thursday_red = {
 	'3:10': ['https://meet.google.com/vde-utdm-fks'],
 	'4:50': ['https://meet.google.com/vde-utdm-fks'],
+	'6:20': ['https://meet.google.com/vde-utdm-fks'], #перерыв
 	'6:50': ['https://meet.google.com/vde-utdm-fks'],
 }
 Friday = {#n
-	#2 пара подгаева
+	'3:10': ['https://meet.google.com/vde-utdm-fks'],
 	'4:50': ['https://meet.google.com/iwg-hndb-qwg'],
 	'6:20': ['https://meet.google.com/iwg-hndb-qwg'], #перерыв
 	'6:50': ['https://meet.google.com/iwg-hndb-qwg']

@@ -13,8 +13,8 @@ import time
 import account, rasp
 
 #Settings
-minimum_number_of_users_to_logout = 4 #Normal value 6
-minimum_number_of_messages_to_send = 5 #Normal value 6
+minimum_number_of_users_to_logout = 4 #Normal value 4
+minimum_number_of_messages_to_send = 5 #Normal value 5
 
 admin = [
 	'219648345', #Дрон
@@ -232,70 +232,74 @@ def write_logs(message):
 
 def ManageBot():
 	while 1:
-		for event in longpoll.listen():
-			if event.type == VkEventType.MESSAGE_NEW:
-				if event.to_me:
-					request = event.text.lower() #get message from VK
+		try:
+			for event in longpoll.listen():
+				if event.type == VkEventType.MESSAGE_NEW:
+					if event.to_me:
+						request = event.text.lower() #get message from VK
 
-					#Get command and message
-					tmp_command = request.split()
-					command = tmp_command[0]
-					tmp_count = 1
-					command_message = ""
-					for word in tmp_command:
-						if tmp_count != 1:
-							command_message = command_message +" "+ str(word)
-						tmp_count = tmp_count + 1
-					command_message = ' '.join(command_message.split())
+						#Get command and message
+						tmp_command = request.split()
+						command = tmp_command[0]
+						tmp_count = 1
+						command_message = ""
+						for word in tmp_command:
+							if tmp_count != 1:
+								command_message = command_message +" "+ str(word)
+							tmp_count = tmp_count + 1
+						command_message = ' '.join(command_message.split())
 
-					if request == "информация":
-						if str(event.user_id) in admin:
-							write_msg(event.user_id, "Статус: Админ\n\nДоступные команды:\n▸Подключиться *ссылка*\n▸Отключиться\n▸Написать *сообщение*\n▸Скриншот")
+						if request == "информация":
+							if str(event.user_id) in admin:
+								write_msg(event.user_id, "Статус: Админ\n\nДоступные команды:\n▸Подключиться *ссылка*\n▸Отключиться\n▸Написать *сообщение*\n▸Скриншот")
+							else:
+								write_msg(event.user_id, "Доступные команды:\n")
+						elif request == "123":
+							automatic_message_sending()
+						elif request == "отключиться":
+							if str(event.user_id) in admin:
+								GoogleMeet_disconntect()
+								write_msg(event.user_id, "Отключился")
+								write_logs(str(event.user_id)+" | Отключился")
+							else:
+								write_msg(event.user_id, "Ошибка доступа")
+						elif request == "скриншот":
+							if str(event.user_id) in admin:
+								write_logs(str(event.user_id)+" | Сделал скриншот")
+								Screenshot()
+								upload = vk_api.VkUpload(vk)
+								photo = upload.photo_messages('screenshot.png')
+								owner_id = photo[0]['owner_id']
+								photo_id = photo[0]['id']
+								access_key = photo[0]['access_key']
+								attachment = f'photo{owner_id}_{photo_id}_{access_key}'
+								vk.method("messages.send", {"peer_id": event.peer_id, "message": "", "attachment": attachment, "random_id": 0})
+							else:
+								write_msg(event.user_id, "Ошибка доступа")
+						elif command == "подключиться":
+							if str(event.user_id) in admin:
+								try:
+									write_logs(str(event.user_id)+" | Подключился: "+str(command_message))
+									GoogleMeet_conntect(command_message)
+								except:
+									write_msg(event.user_id, "Ошибка подключения\nВозможно вы неверно указали ссылку\nПример: Подключиться https://meet.google.com/ffx-dvcy-scp")
+							else:
+								write_msg(event.user_id, "Ошибка доступа")
+						elif command == "написать":
+							if str(event.user_id) in admin:
+								try:
+									write_logs(str(event.user_id)+" | Написал: "+str(command_message))
+									GoogleMeet_send_message(command_message)
+								except:
+									write_msg(event.user_id, "Не удалось отправить сообещние\nВозможны вы не подключились к конференции")
+							else:
+								write_msg(event.user_id, "Ошибка доступа")
 						else:
-							write_msg(event.user_id, "Доступные команды:\n")
-					elif request == "123":
-						automatic_message_sending()
-					elif request == "отключиться":
-						if str(event.user_id) in admin:
-							GoogleMeet_disconntect()
-							write_msg(event.user_id, "Отключился")
-							write_logs(str(event.user_id)+" | Отключился")
-						else:
-							write_msg(event.user_id, "Ошибка доступа")
-					elif request == "скриншот":
-						if str(event.user_id) in admin:
-							write_logs(str(event.user_id)+" | Сделал скриншот")
-							Screenshot()
-							upload = vk_api.VkUpload(vk)
-							photo = upload.photo_messages('screenshot.png')
-							owner_id = photo[0]['owner_id']
-							photo_id = photo[0]['id']
-							access_key = photo[0]['access_key']
-							attachment = f'photo{owner_id}_{photo_id}_{access_key}'
-							vk.method("messages.send", {"peer_id": event.peer_id, "message": "", "attachment": attachment, "random_id": 0})
-						else:
-							write_msg(event.user_id, "Ошибка доступа")
-					elif command == "подключиться":
-						if str(event.user_id) in admin:
-							try:
-								write_logs(str(event.user_id)+" | Подключился: "+str(command_message))
-								GoogleMeet_conntect(command_message)
-							except:
-								write_msg(event.user_id, "Ошибка подключения\nВозможно вы неверно указали ссылку\nПример: Подключиться https://meet.google.com/ffx-dvcy-scp")
-						else:
-							write_msg(event.user_id, "Ошибка доступа")
-					elif command == "написать":
-						if str(event.user_id) in admin:
-							try:
-								write_logs(str(event.user_id)+" | Написал: "+str(command_message))
-								GoogleMeet_send_message(command_message)
-							except:
-								write_msg(event.user_id, "Не удалось отправить сообещние\nВозможны вы не подключились к конференции")
-						else:
-							write_msg(event.user_id, "Ошибка доступа")
-					else:
-						write_msg(event.user_id, "Такой команды нет\nНапиши 'Информация', чтобы получить доступные команды")
-
+							write_msg(event.user_id, "Такой команды нет\nНапиши 'Информация', чтобы получить доступные команды")
+		except:
+			print("Переподключение к серверам ВК")
+			write_logs("VK bot read timed out")
+			time.sleep(1)
 
 def Timer():
 	while 1:
